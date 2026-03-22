@@ -1,4 +1,4 @@
-# STOCK RISK & FORECAST DASHBOARD PIPELINE 
+# STOCK RISK & FORECAST DASHBOARD PIPLELINE
 
 import os
 import glob
@@ -15,7 +15,7 @@ RISK_FREE_RATE_ANNUAL = 0.03
 TRADING_DAYS = 252
 ROLL_WINDOW = 21
 
-#LOAD & COMBINE CSV FILES ----------
+#Load CSV FILES
 all_files = glob.glob(os.path.join(DATA_FOLDER, "Financial Data - *.csv"))
 
 df_list = []
@@ -33,7 +33,7 @@ df = df.sort_values(["Ticker", "Date"]).reset_index(drop=True)
 df["Return"] = df.groupby("Ticker")["Close"].pct_change()
 df["CumulativeReturn"] = (1 + df["Return"]).groupby(df["Ticker"]).cumprod() - 1
 
-# Rolling Volatility (21 days) & Annualized Vol
+# Rolling Volatility & Annualized Vol
 df["RollingVol_21D"] = (
     df.groupby("Ticker")["Return"]
     .rolling(window=ROLL_WINDOW)
@@ -110,7 +110,7 @@ def forecast_returns(returns, horizon=21):
     preds = model.predict(future_idx)
     return np.mean(preds)
 
-# PER-TICKER METRICS
+# PER TICKER METRICS
 summary_rows = []
 for ticker in df["Ticker"].unique():
     sub = df[df["Ticker"] == ticker].copy()
@@ -148,7 +148,7 @@ summary = pd.DataFrame(summary_rows)
 df.to_csv(OUTPUT_MASTER, index=False)
 summary.to_csv(OUTPUT_SUMMARY, index=False)
 
-print("\n✅ Success! Files created:")
+print("\n Success! Files created:")
 print(f"  → {OUTPUT_MASTER}")
 print(f"  → {OUTPUT_SUMMARY}")
 print("\nNow import these CSVs into Power BI for your dashboard!")
