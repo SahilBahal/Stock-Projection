@@ -10,4 +10,4 @@ corr = pivot.corr()
 
 # Save as CSV
 corr.to_csv("data/correlation_matrix.csv")
-print("✅ Created data/correlation_matrix.csv for Power BI heatmap.")
+print(" Created data/correlation_matrix.csv for Power BI heatmap.")
